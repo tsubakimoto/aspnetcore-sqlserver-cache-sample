@@ -26,6 +26,8 @@ namespace MyApp
                 options.ConnectionString = Configuration.GetConnectionString("DefaultConnection");
                 options.SchemaName = "dbo";
                 options.TableName = "TestCache";
+                options.ExpiredItemsDeletionInterval = null;
+                options.DefaultSlidingExpiration = TimeSpan.FromMinutes(5);
             });
 
             services.AddMvc();
