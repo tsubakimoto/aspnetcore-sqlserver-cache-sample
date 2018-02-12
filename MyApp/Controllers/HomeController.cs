@@ -2,14 +2,23 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using MyApp.Models;
 
 namespace MyApp.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IDistributedCache _cache;
+
+        public HomeController(IDistributedCache cache)
+        {
+            _cache = cache;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -32,6 +41,22 @@ namespace MyApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public async Task<IActionResult> Cache()
+        {
+            var now = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss:fff");
+            var value = await _cache.GetAsync(nameof(now).ToLower());
+            if (value == null)
+            {
+                await _cache.SetAsync(nameof(now).ToLower(), Encoding.UTF8.GetBytes(now));
+            }
+            else
+            {
+                now = Encoding.UTF8.GetString(value);
+            }
+
+            return Content($"じこく→ {now}");
         }
     }
 }
