@@ -75,5 +75,36 @@ namespace MyApp.Controllers
             }
             return Content($"じこく→ {now}");
         }
+
+        public IActionResult Session2()
+        {
+            var now = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss:fff");
+            var key = $"{nameof(Session2).ToLower()}_{nameof(now).ToLower()}";
+            var value = TempData[key];
+            if (value == null)
+            {
+                TempData[key] = now;
+            }
+            else
+            {
+                now = value.ToString();
+            }
+            return Content($"じこく→ {now}");
+        }
+
+        public IActionResult ViewBag1()
+        {
+            var now = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss:fff");
+            var value = ViewBag.ViewBag1now; //ViewBagは次のリクエストに引き継がれない
+            if (value == null)
+            {
+                ViewBag.ViewBag1now = now;
+            }
+            else
+            {
+                now = value.ToString();
+            }
+            return Content($"じこく→ {now}");
+        }
     }
 }

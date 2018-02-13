@@ -36,7 +36,8 @@ namespace MyApp
                 options.Cookie.HttpOnly = true;
             });
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddSessionStateTempDataProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,7 +60,7 @@ namespace MyApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Session}/{id?}");
+                    template: "{controller=Home}/{action=ViewBag1}/{id?}");
             });
         }
     }
