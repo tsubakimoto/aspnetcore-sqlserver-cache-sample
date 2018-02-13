@@ -30,6 +30,12 @@ namespace MyApp
                 options.DefaultSlidingExpiration = TimeSpan.FromMinutes(5);
             });
 
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(1); //テストのためわざと短くしている
+                options.Cookie.HttpOnly = true;
+            });
+
             services.AddMvc();
         }
 
@@ -47,11 +53,13 @@ namespace MyApp
 
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Cache}/{id?}");
+                    template: "{controller=Home}/{action=Session}/{id?}");
             });
         }
     }

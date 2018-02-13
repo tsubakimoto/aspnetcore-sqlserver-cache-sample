@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using MyApp.Models;
@@ -56,6 +57,22 @@ namespace MyApp.Controllers
                 now = Encoding.UTF8.GetString(value);
             }
 
+            return Content($"じこく→ {now}");
+        }
+
+        public IActionResult Session()
+        {
+            var now = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss:fff");
+            var key = $"{nameof(Session).ToLower()}_{nameof(now).ToLower()}";
+            var value = HttpContext.Session.GetString(key);
+            if (value == null)
+            {
+                HttpContext.Session.SetString(key, now);
+            }
+            else
+            {
+                now = value;
+            }
             return Content($"じこく→ {now}");
         }
     }
