@@ -60,6 +60,28 @@ namespace MyApp.Controllers
             return Content($"じこく→ {now}");
         }
 
+        public async Task<IActionResult> Cache2()
+        {
+            var now = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss:fff");
+            var value = await _cache.GetStringAsync(nameof(now).ToLower());
+            if (value == null)
+            {
+                await _cache.SetStringAsync(nameof(now).ToLower(), now);
+            }
+            else
+            {
+                now = value;
+            }
+
+            return Content($"じこく→ {now}");
+        }
+
+        public async Task<IActionResult> RemoveCache()
+        {
+            await _cache.RemoveAsync("now");
+            return Content("cache removed.");
+        }
+
         public IActionResult Session()
         {
             var now = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss:fff");

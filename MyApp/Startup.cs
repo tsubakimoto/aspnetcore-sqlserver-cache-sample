@@ -60,7 +60,7 @@ namespace MyApp
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=ViewBag1}/{id?}");
+                    template: "{controller=Home}/{action=Cache2}/{id?}");
             });
         }
     }
